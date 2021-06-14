@@ -8,7 +8,7 @@ require('dotenv').config({ path: '../config/.env' });
 // Short URL Generator
 router.post('/short', async (req, res) => {
   const { origUrl } = req.body;
-  const base = process.env.base;
+  const base = process.env.BASE;
 
   const urlId = shortid.generate();
   if (utils.validateUrl(origUrl)) {
@@ -34,7 +34,7 @@ router.post('/short', async (req, res) => {
       res.status(500).json('Server Error');
     }
   } else {
-    res.status(401).json('Invalid Original Url');
+    res.status(400).json('Invalid Original Url');
   }
 });
 
