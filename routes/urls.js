@@ -1,17 +1,19 @@
-const express = require('express');
+import express from 'express';
+import { nanoid } from 'nanoid';
+import Url from '../models/Url.js';
+import { validateUrl } from '../utils/utils.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../config/.env' });
+
 const router = express.Router();
-const shortid = require('shortid');
-const Url = require('../models/Url');
-const utils = require('../utils/utils');
-require('dotenv').config({ path: '../config/.env' });
 
 // Short URL Generator
 router.post('/short', async (req, res) => {
   const { origUrl } = req.body;
   const base = process.env.BASE;
 
-  const urlId = shortid.generate();
-  if (utils.validateUrl(origUrl)) {
+  const urlId = nanoid();
+  if (validateUrl(origUrl)) {
     try {
       let url = await Url.findOne({ origUrl });
       if (url) {
@@ -38,4 +40,4 @@ router.post('/short', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
